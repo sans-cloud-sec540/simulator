@@ -24,4 +24,4 @@ jobs:
           pip install mkdocs mkdocs-material
           mkdocs --version
           cd ./docs
-          mkdocs release --force
+          mkdocs gh-deploy --force
