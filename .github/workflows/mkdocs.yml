@@ -1,7 +1,8 @@
 name: Deploy Documentation
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
 
 permissions:
   contents: write
@@ -21,4 +22,4 @@ jobs:
       - run: |
           pip install mkdocs-material
           cd ./docs
-          mkdocs gh-deploy --force
+          mkdocs mkdocs --force
