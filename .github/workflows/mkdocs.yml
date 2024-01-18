@@ -3,6 +3,7 @@ name: Deploy Documentation
 on:
   push:
     branches:
+      - main
 
 permissions:
   contents: write
@@ -20,6 +21,7 @@ jobs:
           key: ${{ github.ref }}
           path: .cache
       - run: |
-          pip install mkdocs-material
+          pip install mkdocs mkdocs-material
+          mkdocs --version
           cd ./docs
-          mkdocs mkdocs --force
+          mkdocs release --force
