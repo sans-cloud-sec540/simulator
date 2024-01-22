@@ -1,3 +1,4 @@
+# SANS Cloud Security Flight Simulator launch template
 variable "vm_version" {
   type        = string
   description = "SemVer version of image or empty for latest"
@@ -85,8 +86,6 @@ provider "publicip" {
   rate_limit_burst = "1"     # optional
 }
 
-
-# From https://github.com/cloudacademy/terraform-aws/tree/main/exercises/exercise1
 data "aws_ami" "ami" {
   most_recent = true
 
@@ -130,7 +129,7 @@ resource "aws_vpc" "main" {
   cidr_block = "10.54.0.0/16"
 
   tags = {
-    Name = "${upper(var.course_number)}-Testing"
+    Name = "${upper(var.course_number)}-Simulator-${random_pet.ssh_key_name.id}"
   }
 }
 
@@ -212,7 +211,7 @@ resource "aws_security_group" "vm" {
   }
 
   tags = {
-    Name = "sg${upper(var.course_number)}VM"
+    Name = "sg${upper(var.course_number)}VM-${random_pet.ssh_key_name.id}"
   }
 }
 
@@ -267,7 +266,7 @@ runcmd:
 EOF
 
   tags = {
-    Name = "${upper(var.course_number)}-Simulator"
+    Name = "${upper(var.course_number)}-Simulator-${random_pet.ssh_key_name.id}"
   }
 }
 
@@ -479,10 +478,6 @@ resource "local_file" "proxy_config" {
       "defaultProxyServerId": "cfr8zljbs0dye"
     }
   END_SMART_PROXY
-}
-
-output "found_ami" {
-  value = "AMI:  ${data.aws_ami.ami.id} - ${data.aws_ami.ami.name}"
 }
 
 output "environment_summary" {
