@@ -10,8 +10,10 @@ variable "vm_version" {
 }
 
 variable "instance_type" {
-  type    = string
-  default = "m5.xlarge"
+  type = string
+  # default = "m5.xlarge"     # $147/mo
+  # default = "m6i.xlarge"    # $140/mo
+  default = "m7i-flex.xlarge" # $138/mo
 }
 
 variable "availability_zones" {
@@ -37,9 +39,13 @@ variable "course_number" {
 }
 
 variable "course_version" {
-  type        = string
-  description = "SANS course version"
-  default     = "j01"
+  type = string
+  description = "SANS Course Version ... eg k01"
+  default = "k01"
+  validation {
+    condition     = can(regex("^[a-z][0-9][0-9]$", var.course_version))
+    error_message = "Lower-case SANS Course Release ... eg k01"
+  }
 }
 
 terraform {
@@ -67,7 +73,7 @@ terraform {
       version = "~>4.0"
     }
     publicip = {
-      source  = "nxt-engineering/publicip"
+      source = "nxt-engineering/publicip"
       version = "0.0.9"
     }
   }
@@ -75,6 +81,12 @@ terraform {
 
 provider "aws" {
   region = "us-east-2"
+  default_tags {
+    tags = {
+      Course        = upper(var.course_number)
+      CourseVersion = var.course_version
+    }
+  }
 }
 
 provider "publicip" {
@@ -139,7 +151,7 @@ resource "aws_subnet" "subnet1" {
   availability_zone = var.availability_zones[0]
 
   tags = {
-    Name = "Subnet1"
+    Name = "Subnet1 ${random_pet.ssh_key_name.id}"
     Type = "Public"
   }
 }
@@ -150,7 +162,7 @@ resource "aws_subnet" "subnet2" {
   availability_zone = var.availability_zones[1]
 
   tags = {
-    Name = "Subnet2"
+    Name = "Subnet2 ${random_pet.ssh_key_name.id}"
     Type = "Public"
   }
 }
@@ -168,7 +180,7 @@ resource "aws_route_table" "rt1" {
   }
 
   tags = {
-    Name = "Public"
+    Name = "Public ${random_pet.ssh_key_name.id}"
   }
 }
 
@@ -217,12 +229,18 @@ resource "aws_security_group" "vm" {
 
 resource "aws_instance" "vm" {
   ami                    = data.aws_ami.ami.id
-  instance_type          = "m5.xlarge"
+  instance_type          = var.instance_type
   key_name               = random_pet.ssh_key_name.id
   subnet_id              = aws_subnet.subnet1.id
   vpc_security_group_ids = [aws_security_group.vm.id]
   root_block_device {
-    volume_size = 100
+    volume_size = 200
+  }
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 2
   }
 
   associate_public_ip_address = true
@@ -495,6 +513,8 @@ output "environment_summary" {
   SSH + SOCKS Connect Command
 
     ssh -i ${random_pet.ssh_key_name.id}.pem -D ${random_integer.ssh_proxy_port.id} student@${aws_instance.vm.public_ip}
+
+  SOCKS5 URI: socks5://student:${random_pet.proxy_pass.id}@${aws_instance.vm.public_ip}:54000
 
   END_SUMMARY
 }
