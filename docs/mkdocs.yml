@@ -25,6 +25,7 @@ nav:
   - Home: "index.md"
   - Versions:
       - J01: "j01.md"
+      - K01: "k01.md"
 
 markdown_extensions:
   - admonition
