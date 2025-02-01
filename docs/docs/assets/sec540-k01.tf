@@ -514,7 +514,7 @@ output "environment_summary" {
 
     ssh -i ${random_pet.ssh_key_name.id}.pem -D ${random_integer.ssh_proxy_port.id} student@${aws_instance.vm.public_ip}
 
-  SOCKS5 URI: socks5://student:${random_pet.proxy_pass.id}@${aws_instance.vm.public_ip}:54000
+  SOCKS5 URI: socks5://student:${random_pet.proxy_pass.id}@${aws_instance.vm.public_ip}:${random_integer.ssh_proxy_port.id}
 
   END_SUMMARY
 }
