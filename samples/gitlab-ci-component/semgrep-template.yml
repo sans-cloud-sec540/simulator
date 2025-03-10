@@ -1,0 +1,134 @@
+###############################################################################################
+# Sample Semgrep component for GitLab CI/CD include statements
+# Supports this webcast: https://www.sans.org/webcasts/cloud-native-security-part-1-scaling-devsecops-gitlab-cl/
+###############################################################################################
+
+spec:
+  inputs:
+    base-image:
+      description: Base image used to run sempgrep scan
+      default: "r.sans.labs/operations/dm-devops/builder_semgrep:stable"
+    stage:
+      description: The stage the defect dojo jobs will run
+      default: ".test"
+    tags:
+      description: List of tags to add to job specification - eg. for runner selection
+      default: ""
+    scan-directory:
+      description: Directory to perform code analysis
+      default: "."
+    output-directory:
+      description: Output directory for result files
+      default: "./semgrep"
+    rules-file:
+      description: Semgrep rules config file with the rules
+      default: "r2c-security-audit"
+    mr-pipeline-enabled:
+      description: Trigger semgrep scan on merge request pipelines
+      default: true
+      type: boolean
+    default-pipeline-enabled:
+      description: Trigger semgrep scan on commits to the default branch
+      default: false
+      type: boolean
+---
+variables:
+  SEMGREP_BASE_IMAGE: $[[ inputs.base-image ]]
+  SEMGREP_JOB_TAGS: $[[ inputs.tags ]]
+  SEMGREP_SCAN_DIRECTORY: $[[ inputs.scan-directory ]]
+  SEMGREP_OUTPUT_DIRECTORY: $[[ inputs.output-directory ]]
+  SEMGREP_RULES_FILE: $[[ inputs.rules-file ]]
+  SEMGREP_MR_PIPELINE_ENABLED: $[[ inputs.mr-pipeline-enabled ]]
+  SEMGREP_DEFAULT_PIPELINE_ENABLED: $[[ inputs.default-pipeline-enabled ]]
+
+###############################################################################################
+#                                      scripts definition                                     #
+###############################################################################################
+
+.semgrep-scripts: &semgrep-scripts |
+  # BEGSCRIPT
+  set -e
+
+  function log_info() {
+      echo -e "[\\e[1;94mINFO\\e[0m] $*"
+  }
+
+  function log_warn() {
+      echo -e "[\\e[1;93mWARN\\e[0m] $*"
+  }
+
+  function log_error() {
+      echo -e "[\\e[1;91mERROR\\e[0m] $*"
+  }
+
+  function fail() {
+    log_error "$*"
+    exit 1
+  }
+
+  function run_semgrep_scan() {
+    # Check that the SEMGREP_SCAN_DIRECTORY env var is set
+    if [[ -z "${SEMGREP_SCAN_DIRECTORY}" ]]; then
+        log_error "Input parameter: scan-directory is required."
+        exit 1
+    fi
+
+    if [[ -z "${SEMGREP_OUTPUT_DIRECTORY}" ]]; then
+        log_error "Input parameter: output-directory is required."
+        exit 1
+    fi
+
+    if [[ ! -f "/opt/semgrep/rules/${SEMGREP_RULES_FILE}" ]]; then
+      log_error "Input parameter: rules-file not found: /opt/semgrep/rules/${SEMGREP_RULES_FILE}"
+      exit 1
+    fi
+
+    # create the output directory (if needed)
+    log_info "Creating semgrep results directory: ${SEMGREP_OUTPUT_DIRECTORY}"
+    mkdir -p "${SEMGREP_OUTPUT_DIRECTORY}"
+
+    log_info "Starting semgrep scan of the ${SEMGREP_SCAN_DIRECTORY} directory using the ${SEMGREP_RULES_FILE} rules ..."
+    semgrep --version
+
+    semgrep scan -f "/opt/semgrep/rules/${SEMGREP_RULES_FILE}" \
+      --disable-version-check \
+      --junit-xml-output "${SEMGREP_OUTPUT_DIRECTORY}/semgrep.junit.xml" \
+      --sarif-output "${SEMGREP_OUTPUT_DIRECTORY}/semgrep.sarif" \
+      "${SEMGREP_SCAN_DIRECTORY}"
+
+    log_info "Semgrep scan summary..."
+    RULES=$(jq '.runs[].tool.driver.rules | length' <${SEMGREP_OUTPUT_DIRECTORY}/semgrep.sarif)
+    FAILURES=$(jq '.runs[].results | length' <${SEMGREP_OUTPUT_DIRECTORY}/semgrep.sarif)
+    log_info "Number of rules evaluated: ${RULES}"
+    log_info "Number of rules failing: ${FAILURES}"
+    jq -r '.runs[].results[].ruleId' <${SEMGREP_OUTPUT_DIRECTORY}/semgrep.sarif
+  }
+
+  # ENDSCRIPT
+
+###############################################################################################
+#                                        semgrep job                                          #
+###############################################################################################
+
+semgrep:
+  tags: [$SEMGREP_JOB_TAGS]
+  image:
+    name: $SEMGREP_BASE_IMAGE
+    entrypoint: [""]
+  stage: $[[ inputs.stage ]]
+  script:
+    - !reference [.semgrep-scripts]
+    - run_semgrep_scan
+  allow_failure:
+    exit_codes: 142
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $SEMGREP_MR_PIPELINE_ENABLED == "true"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $SEMGREP_DEFAULT_PIPELINE_ENABLED == "true"'
+      when: always
+  artifacts:
+    when: always
+    paths:
+      - $SEMGREP_OUTPUT_DIRECTORY/*
+    reports:
+      junit: $SEMGREP_OUTPUT_DIRECTORY/semgrep.junit.xml
