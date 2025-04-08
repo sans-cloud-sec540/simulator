@@ -14,16 +14,12 @@ These setup instructions contain everything you'll need to deploy the Cloud Secu
 
 ## SEC540
 
-### Active Versions
-
 - [SEC540 K01](./k01.md) - April 2025 - TBD
 
-### Prior Versions
+??? info "Prior Versions"
 
-- [SEC540 J01](./j01.md) - before April 2025.
+    - [SEC540 J01](./j01.md) - before April 2025.
 
 ## SEC545
-
-### Active Versions
 
 - [SEC545 K02](./sec545-k02.md) - April 2025 - TBD

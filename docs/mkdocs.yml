@@ -1,5 +1,5 @@
 site_name: "SANS Cloud Security Flight Simulator Instructions"
-copyright: "©2024 Eric Johnson, Ben Allen, and Frank Kim."
+copyright: "©2025 Eric Johnson, Ben Allen, and Frank Kim."
 site_description: "SANS Cloud Security Flight Simulator setup instructions and bootstrap template."
 site_author: "Eric Johnson, Ben Allen, and Frank Kim"
 
@@ -62,3 +62,6 @@ markdown_extensions:
       custom_checkbox: true
       clickable_checkbox: true
   - pymdownx.tilde
+
+extra_css:
+  - css/custom.css
