@@ -1,6 +1,6 @@
-site_name: "SANS SEC540 Cloud Security Flight Simulator Instructions"
+site_name: "SANS Cloud Security Flight Simulator Instructions"
 copyright: "©2024 Eric Johnson, Ben Allen, and Frank Kim."
-site_description: "SANS SEC540 Cloud Security Flight Simulator setup instructions and bootstrap template."
+site_description: "SANS Cloud Security Flight Simulator setup instructions and bootstrap template."
 site_author: "Eric Johnson, Ben Allen, and Frank Kim"
 
 theme:
