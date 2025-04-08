@@ -35,21 +35,21 @@ variable "ami_owner" {
 variable "course_number" {
   type        = string
   description = "SANS course name"
-  default     = "sec540"
+  default     = "sec545"
 }
 
 variable "course_version" {
   type = string
-  description = "SANS Course Version ... eg k01"
-  default = "k01"
+  description = "SANS Course Version ... eg k02"
+  default = "k02"
   validation {
     condition     = can(regex("^[a-z][0-9][0-9]$", var.course_version))
-    error_message = "Lower-case SANS Course Release ... eg k01"
+    error_message = "Lower-case SANS Course Release ... eg k02"
   }
 }
 
 terraform {
-  required_version = ">= 1.4.0"
+  required_version = ">= 1.9.0"
 
   required_providers {
     aws = {
@@ -513,8 +513,6 @@ output "environment_summary" {
   SSH + SOCKS Connect Command
 
     ssh -i ${random_pet.ssh_key_name.id}.pem -D ${random_integer.ssh_proxy_port.id} student@${aws_instance.vm.public_ip}
-
-  SOCKS5 URI: socks5://student:${random_pet.proxy_pass.id}@${aws_instance.vm.public_ip}:${random_integer.ssh_proxy_port.id}
 
   END_SUMMARY
 }
