@@ -1,0 +1,9 @@
+.md-typeset,
+.md-typeset code :not(h1, h2, h3, h4, h5),
+.md-typeset abstract,
+.md-typeset .admonition,
+.md-typeset details,
+.md-typeset .footnote,
+.md-typeset :is(.admonition, details) {
+  font-size: 0.9rem;
+}
