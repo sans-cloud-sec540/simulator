@@ -9,7 +9,7 @@ hide:
 These setup instructions contain everything you'll need to deploy the Cloud Security training lab environment into your own personal cloud accounts. Make sure you use the instructions for the version of the course that you attended.
 
 - Details found in Course Materials Downloads "Lab Setup Instructions" guide:
-  - Firefox + [SmartProxy (by Salar K)](https://addons.mozilla.org/en-US/firefox/addon/smartproxyextension/){:target="_blank"}
+  - Firefox + [SmartProxy (by Salar K)](https://addons.mozilla.org/en-US/firefox/addon/smartproxy/){:target="_blank"}
   - SANS Cloud Security [CA Certificate](https://sec540.com/ca){:target="_blank"}
 
 ## SEC540
