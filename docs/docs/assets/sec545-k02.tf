@@ -1,4 +1,3 @@
-# SANS Cloud Security Flight Simulator launch template
 variable "vm_version" {
   type        = string
   description = "SemVer version of image or empty for latest"
@@ -10,10 +9,8 @@ variable "vm_version" {
 }
 
 variable "instance_type" {
-  type = string
-  # default = "m5.xlarge"     # $147/mo
-  # default = "m6i.xlarge"    # $140/mo
-  default = "m7i-flex.xlarge" # $138/mo
+  type    = string
+  default = "m5.xlarge"
 }
 
 variable "availability_zones" {
@@ -27,29 +24,8 @@ variable "trusted_cidr" {
   default     = "600.500.400.300/200"
 }
 
-variable "ami_owner" {
-  type        = string
-  description = "Account that owns the AMI"
-}
-
-variable "course_number" {
-  type        = string
-  description = "SANS course name"
-  default     = "sec545"
-}
-
-variable "course_version" {
-  type = string
-  description = "SANS Course Version ... eg k02"
-  default = "k02"
-  validation {
-    condition     = can(regex("^[a-z][0-9][0-9]$", var.course_version))
-    error_message = "Lower-case SANS Course Release ... eg k02"
-  }
-}
-
 terraform {
-  required_version = ">= 1.9.0"
+  required_version = ">= 1.4.0"
 
   required_providers {
     aws = {
@@ -73,7 +49,7 @@ terraform {
       version = "~>4.0"
     }
     publicip = {
-      source = "nxt-engineering/publicip"
+      source  = "nxt-engineering/publicip"
       version = "0.0.9"
     }
   }
@@ -81,12 +57,6 @@ terraform {
 
 provider "aws" {
   region = "us-east-2"
-  default_tags {
-    tags = {
-      Course        = upper(var.course_number)
-      CourseVersion = var.course_version
-    }
-  }
 }
 
 provider "publicip" {
@@ -98,12 +68,16 @@ provider "publicip" {
   rate_limit_burst = "1"     # optional
 }
 
-data "aws_ami" "ami" {
+resource "random_pet" "ssh_key_name" {
+  separator = "-"
+}
+
+data "aws_ami" "sec545" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["sans-${lower(var.course_number)}-${var.course_version}.${var.vm_version}*"]
+    values = ["author-sec545-*-flight-simulator-*"]
   }
 
   filter {
@@ -111,7 +85,7 @@ data "aws_ami" "ami" {
     values = ["hvm"]
   }
 
-  owners = [var.ami_owner]
+  owners = ["469658012540"] # SROC account
 }
 
 data "publicip_address" "default" {
@@ -125,7 +99,7 @@ resource "random_pet" "proxy_pass" {
   length    = 4
   separator = "_"
   keepers = {
-    ami_id = data.aws_ami.ami.id
+    ami_id = data.aws_ami.sec545.id
   }
 }
 
@@ -133,7 +107,7 @@ resource "random_integer" "ssh_proxy_port" {
   min = 54000
   max = 54999
   keepers = {
-    ami_id = data.aws_ami.ami.id
+    ami_id = data.aws_ami.sec545.id
   }
 }
 
@@ -141,7 +115,7 @@ resource "aws_vpc" "main" {
   cidr_block = "10.54.0.0/16"
 
   tags = {
-    Name = "${upper(var.course_number)}-Simulator-${random_pet.ssh_key_name.id}"
+    Name = "SEC545 ${random_pet.ssh_key_name.id}"
   }
 }
 
@@ -151,7 +125,7 @@ resource "aws_subnet" "subnet1" {
   availability_zone = var.availability_zones[0]
 
   tags = {
-    Name = "Subnet1 ${random_pet.ssh_key_name.id}"
+    Name = "Subnet1"
     Type = "Public"
   }
 }
@@ -162,7 +136,7 @@ resource "aws_subnet" "subnet2" {
   availability_zone = var.availability_zones[1]
 
   tags = {
-    Name = "Subnet2 ${random_pet.ssh_key_name.id}"
+    Name = "Subnet2"
     Type = "Public"
   }
 }
@@ -180,7 +154,7 @@ resource "aws_route_table" "rt1" {
   }
 
   tags = {
-    Name = "Public ${random_pet.ssh_key_name.id}"
+    Name = "Public"
   }
 }
 
@@ -194,13 +168,13 @@ resource "aws_route_table_association" "rta2" {
   route_table_id = aws_route_table.rt1.id
 }
 
-resource "aws_security_group" "vm" {
-  name        = "sg${upper(var.course_number)}VM"
-  description = "${upper(var.course_number)} VM network traffic"
+resource "aws_security_group" "sec545vm" {
+  name        = "sgSEC545VM"
+  description = "SEC545 VM network traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "SSH from admin ip"
+    description = "SSH from anywhere"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -208,7 +182,7 @@ resource "aws_security_group" "vm" {
   }
 
   ingress {
-    description = "54000 from admin ip"
+    description = "54000 from anywhere"
     from_port   = 54000
     to_port     = 54000
     protocol    = "tcp"
@@ -223,24 +197,18 @@ resource "aws_security_group" "vm" {
   }
 
   tags = {
-    Name = "sg${upper(var.course_number)}VM-${random_pet.ssh_key_name.id}"
+    Name = "SEC545 ${random_pet.ssh_key_name.id}"
   }
 }
 
-resource "aws_instance" "vm" {
-  ami                    = data.aws_ami.ami.id
-  instance_type          = var.instance_type
+resource "aws_instance" "web" {
+  ami                    = data.aws_ami.sec545.id
+  instance_type          = "m5.xlarge"
   key_name               = random_pet.ssh_key_name.id
   subnet_id              = aws_subnet.subnet1.id
-  vpc_security_group_ids = [aws_security_group.vm.id]
+  vpc_security_group_ids = [aws_security_group.sec545vm.id]
   root_block_device {
-    volume_size = 200
-  }
-
-  metadata_options {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 2
+    volume_size = 100
   }
 
   associate_public_ip_address = true
@@ -284,12 +252,8 @@ runcmd:
 EOF
 
   tags = {
-    Name = "${upper(var.course_number)}-Simulator-${random_pet.ssh_key_name.id}"
+    Name = "SEC545 ${random_pet.ssh_key_name.id}"
   }
-}
-
-resource "random_pet" "ssh_key_name" {
-  separator = "-"
 }
 
 resource "tls_private_key" "example" {
@@ -370,7 +334,7 @@ resource "local_file" "proxy_config" {
           "rulesSubscriptions": [],
           "profileType": 2,
           "profileId": "InternalProfile_SmartRules",
-          "profileName": "${upper(var.course_number)}-Range",
+          "profileName": "SEC545-Range",
           "profileProxyServerId": "cfr8zljbs0dye",
           "profileTypeConfig": {
             "builtin": true,
@@ -447,10 +411,10 @@ resource "local_file" "proxy_config" {
       "activeProfileId": "InternalProfile_SmartRules",
       "proxyServers": [
         {
-          "name": "${upper(var.course_number)}-name",
+          "name": "SEC545-name",
           "id": "cfr8zljbs0dye",
           "order": 4,
-          "host": "${aws_instance.vm.public_ip}",
+          "host": "${aws_instance.web.public_ip}",
           "port": "54000",
           "protocol": "SOCKS5",
           "username": "student",
@@ -459,7 +423,7 @@ resource "local_file" "proxy_config" {
           "failoverTimeout": null
         },
         {
-          "name": "${upper(var.course_number)}-SSH-Local-${random_integer.ssh_proxy_port.id}",
+          "name": "SEC545-SSH-Local-${random_integer.ssh_proxy_port.id}",
           "id": "cfrifmlkd1dyq",
           "order": 2,
           "host": "127.0.0.1",
@@ -500,9 +464,9 @@ resource "local_file" "proxy_config" {
 
 output "environment_summary" {
   value = <<END_SUMMARY
-  Latest AMI:  ${data.aws_ami.ami.id} - ${data.aws_ami.ami.name}
-  Running AMI: ${aws_instance.vm.ami}
-  Public IP:   ${aws_instance.vm.public_ip}
+  Latest AMI:  ${data.aws_ami.sec545.id} - ${data.aws_ami.sec545.name}
+  Running AMI: ${aws_instance.web.ami}
+  Public IP:   ${aws_instance.web.public_ip}
 
   Local IP:          ${data.publicip_address.default.ip}
   Allow CIDR:        ${local.allowed_cidr}
@@ -512,7 +476,14 @@ output "environment_summary" {
 
   SSH + SOCKS Connect Command
 
-    ssh -i ${random_pet.ssh_key_name.id}.pem -D ${random_integer.ssh_proxy_port.id} student@${aws_instance.vm.public_ip}
+    ssh -i ${random_pet.ssh_key_name.id}.pem -D ${random_integer.ssh_proxy_port.id} student@${aws_instance.web.public_ip}
 
   END_SUMMARY
 }
+
+# export AWS_PROFILE=
+#
+# terraform init
+#
+# terraform apply
+#
