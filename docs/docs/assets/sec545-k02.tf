@@ -1,3 +1,4 @@
+# SANS Cloud Security Flight Simulator launch template
 variable "vm_version" {
   type        = string
   description = "SemVer version of image or empty for latest"
@@ -9,8 +10,10 @@ variable "vm_version" {
 }
 
 variable "instance_type" {
-  type    = string
-  default = "m5.xlarge"
+  type = string
+  # default = "m5.xlarge"     # $147/mo
+  # default = "m6i.xlarge"    # $140/mo
+  default = "m7i-flex.xlarge" # $138/mo
 }
 
 variable "availability_zones" {
@@ -24,8 +27,32 @@ variable "trusted_cidr" {
   default     = "600.500.400.300/200"
 }
 
+variable "ami_owner" {
+  type        = string
+  description = "Account that owns the AMI"
+  default     = "469658012540" # SROC account
+}
+
+variable "course_number" {
+  type        = string
+  description = "SANS course name"
+  default     = "sec545"
+}
+
+variable "course_version" {
+  type = string
+  description = "SANS Course Version ... eg k02"
+  default = "k02"
+  validation {
+    condition     = can(regex("^[a-z][0-9][0-9]$", var.course_version))
+    error_message = "Lower-case SANS Course Release ... eg k02"
+  }
+}
+
+
+
 terraform {
-  required_version = ">= 1.4.0"
+  required_version = ">= 1.9.0"
 
   required_providers {
     aws = {
@@ -57,6 +84,12 @@ terraform {
 
 provider "aws" {
   region = "us-east-2"
+    default_tags {
+    tags = {
+      Course        = upper(var.course_number)
+      CourseVersion = var.course_version
+    }
+  }
 }
 
 provider "publicip" {
@@ -85,7 +118,7 @@ data "aws_ami" "sec545" {
     values = ["hvm"]
   }
 
-  owners = ["469658012540"] # SROC account
+  owners = [var.ami_owner]
 }
 
 data "publicip_address" "default" {
@@ -125,7 +158,7 @@ resource "aws_subnet" "subnet1" {
   availability_zone = var.availability_zones[0]
 
   tags = {
-    Name = "Subnet1"
+    Name = "Subnet1 ${random_pet.ssh_key_name.id}"
     Type = "Public"
   }
 }
@@ -136,7 +169,7 @@ resource "aws_subnet" "subnet2" {
   availability_zone = var.availability_zones[1]
 
   tags = {
-    Name = "Subnet2"
+    Name = "Subnet2 ${random_pet.ssh_key_name.id}"
     Type = "Public"
   }
 }
@@ -154,8 +187,8 @@ resource "aws_route_table" "rt1" {
   }
 
   tags = {
-    Name = "Public"
-  }
+    Name = "Public ${random_pet.ssh_key_name.id}"
+    }
 }
 
 resource "aws_route_table_association" "rta1" {
