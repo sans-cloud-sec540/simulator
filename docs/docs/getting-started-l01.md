@@ -89,11 +89,11 @@ Before getting started, you need to update the lab instructions and apply any av
 
 1. Use the hamburger button (≡) in the top left corner to find the **New Terminal** menu item. When prompted, select the **code** directory to open a new terminal session in the */home/student/code* directory.
 
-    ![](/img/code001.png){: class="w800"}
+    ![](img/code001.png){: class="w800"}
 
 1. Observe the OpenVSCode server displays an embedded Terminal in the bottom of the window.
 
-    ![](/img/code002.png)
+    ![](img/code002.png)
 
 1. When copying and pasting commands into the OpenVSCode terminal, the browsers may need permission to access your host machine's clipboard.
 
@@ -103,7 +103,7 @@ Before getting started, you need to update the lab instructions and apply any av
 
     * In **Chrome**, when prompted with a popup at the top of the browser window, press the **Allow** button.
 
-        ![](/img/chrome-clipboard.png){: class="w300"}
+        ![](img/chrome-clipboard.png){: class="w300"}
 
 1. Run the following command in the Terminal to update the lab instructions to the most recent version.
 
