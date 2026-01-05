@@ -24,7 +24,6 @@ theme:
 nav:
   - Home: "index.md"
   # - Versions:
-  # - SEC540-J01: "j01.md"
   - SEC540-K01: "k01.md"
   - SEC545-K02: "sec545-k02.md"
 
