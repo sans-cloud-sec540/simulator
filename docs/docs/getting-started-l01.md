@@ -6,17 +6,18 @@ You must complete several steps before you arrive or travel to class.  For those
 
 The following sections of this document cover these steps:
 
-1. **SANS MyLabs Access**: Some materials for your course are dynamically generated. This material is provided in the MyLabs section of your sans.org account.
-2. **Lab Range Provisioning**: Review the guidance in this section, launch the SEC540 lab environment range, and download your lab range configuration files.
-3. **SANS Cloud Security Flight Simulator Access**: Use a browser on your host machine to authenticate to the Cloud Security Flight Simulator and access the services running on the DevOps server.
-4. **SEC540 Lab Instructions**: Connect to the DevOps server, update the lab instructions, and apply the errata patches to ensure you are working from the most recent instructions available.
-5. **SEC540 Cloud Configuration**: Complete the relevant environment configuration for your selected cloud provider.
+1. **Downloading Course Materials**: Follow the guidance at [https://sansurl.com/downloading-course-materials](https://sansurl.com/downloading-course-materials){: target="_blank" rel="noopener" } to access and download your course materials.
+2. **SANS MyLabs Access**: Some materials for your course are dynamically generated. Follow the steps below to access this material in the MyLabs section of your sans.org account.
+3. **Lab Range Provisioning**: Review the guidance below to launch the SEC540 lab environment range, and download your lab range configuration files.
+4. **SANS Cloud Security Flight Simulator Access**: Follow the steps below to authenticate to the Cloud Security Flight Simulator and access the services running on the DevOps server.
+5. **SEC540 Lab Instructions**: Follow the steps below to connect to the DevOps server, update the lab instructions, and apply the errata patches to ensure you are working from the most recent instructions available.
+6. **SEC540 Cloud Configuration**: Follow the steps below to complete the relevant environment configuration for your selected cloud provider.
 
-## 1. SANS MyLabs Access
+## 2. SANS MyLabs Access
 
 To access the SANS Cloud Security Flight Simulator, sign in to [https://sans.org/account](https://sans.org/account){: target="_blank" rel="noopener" } and view the **My Labs** screen. Expand the **SEC540** section and read through the details. For step-by-step instructions, review the guidance on the SANS website at [https://sansurl.com/accessing-mylabs-content](https://sansurl.com/accessing-mylabs-content){: target="_blank" rel="noopener" }.
 
-## 2. Lab Range Provisioning
+## 3. Lab Range Provisioning
 
 !!! info "OnDemand Student Access"
 
@@ -42,7 +43,7 @@ Download each of the following files and move them into a noted directory locati
 
 * *azure-service-principal-config.json* - (Optional) Contains programmatic service principal credentials for configuring the DevOps server to authenticate to the SANS managed Azure subscription. These credentials have already been placed on the DevOps server in the *~/config/azure-config.json* file. You should not need to use this file, but keep it as a backup just in case you need to reconfigure the credentials at any point.
 
-## 3. SANS Cloud Security Flight Simulator Access
+## 4. SANS Cloud Security Flight Simulator Access
 
 Open the *sans-sec540-range-access.txt* configuration file you downloaded in the previous section. Find the SEC540 Range Access Instructions at the top of the file, which includes the Range URL, Username, Password, and Expiration.
 
@@ -69,7 +70,7 @@ Enter the Range Username and Range Password to authenticate to the SANS Cloud Se
 
 ![](img/lab-instructions.png){: class="w800"}
 
-## 4. SEC540 Lab Instructions
+## 5. SEC540 Lab Instructions
 
 Before getting started, you need to update the lab instructions and apply any available patches to the DevOps server. To do this, browse to the OpenVSCode Server running on the DevOps server and open a new Terminal session.
 
@@ -131,7 +132,7 @@ Before getting started, you need to update the lab instructions and apply any av
 
 1. When the virtual machine updates have finished applying, you can leave the browser tab running your OpenVSCode session open. You will use this again in Lab 1.0 to configure the cloud credentials.
 
-## 5. SEC540 Environment Configuration
+## 6. SEC540 Environment Configuration
 
 SEC540's lab environment focuses on cloud native technologies including GitLab CI/CD, Vault, Terraform, Kubernetes, Sigstore, Trivy, Open Policy Agent, Gatekeeper, Keycloak, Kong API Gateway, Checkov, Semgrep, Trivy, Prowler, Defect Dojo, Grafana, Open Telemetry, and Cloud Custodian. These technologies are cloud agnostic and used in the lab environment regardless of which cloud provider you choose. However, the configuration and implementation details of each technology will vary slightly depending on whether you target the Amazon Web Services (AWS) or Microsoft Azure cloud providers.
 
