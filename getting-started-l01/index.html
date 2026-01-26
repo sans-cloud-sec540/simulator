@@ -1,0 +1,704 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="SANS Cloud Security Flight Simulator setup instructions and bootstrap template.">
+      
+      
+        <meta name="author" content="Eric Johnson, Ben Allen, and Frank Kim">
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>SEC540 Lab Setup Guide (L01) - SANS Cloud Security Flight Simulator Instructions</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="orange" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec540-lab-setup-guide-l01" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SANS Cloud Security Flight Simulator Instructions" class="md-header__button md-logo" aria-label="SANS Cloud Security Flight Simulator Instructions" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.5 18H13v2H6.5c-1.5 0-2.81-.5-3.89-1.57C1.54 17.38 1 16.09 1 14.58q0-1.95 1.17-3.48C3.34 9.57 4 9.43 5.25 9.15c.42-1.53 1.25-2.77 2.5-3.72S10.42 4 12 4c1.95 0 3.6.68 4.96 2.04 1.12 1.12 1.77 2.46 1.97 3.96-.7 0-1.37.19-1.98.46a4.8 4.8 0 0 0-1.41-3C14.56 6.5 13.38 6 12 6s-2.56.5-3.54 1.46C7.5 8.44 7 9.62 7 11h-.5c-.97 0-1.79.34-2.47 1.03-.69.68-1.03 1.5-1.03 2.47s.34 1.79 1.03 2.5c.68.66 1.5 1 2.47 1m16.5-.7v3.5c0 .6-.6 1.2-1.3 1.2h-5.5c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2v-1.5c0-1.4 1.4-2.5 2.8-2.5s2.8 1.1 2.8 2.5V16c.6 0 1.2.6 1.2 1.3m-2.5-2.8c0-.8-.7-1.3-1.5-1.3s-1.5.5-1.5 1.3V16h3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SANS Cloud Security Flight Simulator Instructions
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SEC540 Lab Setup Guide (L01)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../k01/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SEC540-K01
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sec545-k02/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SEC545-K02
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SANS Cloud Security Flight Simulator Instructions" class="md-nav__button md-logo" aria-label="SANS Cloud Security Flight Simulator Instructions" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.5 18H13v2H6.5c-1.5 0-2.81-.5-3.89-1.57C1.54 17.38 1 16.09 1 14.58q0-1.95 1.17-3.48C3.34 9.57 4 9.43 5.25 9.15c.42-1.53 1.25-2.77 2.5-3.72S10.42 4 12 4c1.95 0 3.6.68 4.96 2.04 1.12 1.12 1.77 2.46 1.97 3.96-.7 0-1.37.19-1.98.46a4.8 4.8 0 0 0-1.41-3C14.56 6.5 13.38 6 12 6s-2.56.5-3.54 1.46C7.5 8.44 7 9.62 7 11h-.5c-.97 0-1.79.34-2.47 1.03-.69.68-1.03 1.5-1.03 2.47s.34 1.79 1.03 2.5c.68.66 1.5 1 2.47 1m16.5-.7v3.5c0 .6-.6 1.2-1.3 1.2h-5.5c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2v-1.5c0-1.4 1.4-2.5 2.8-2.5s2.8 1.1 2.8 2.5V16c.6 0 1.2.6 1.2 1.3m-2.5-2.8c0-.8-.7-1.3-1.5-1.3s-1.5.5-1.5 1.3V16h3z"/></svg>
+
+    </a>
+    SANS Cloud Security Flight Simulator Instructions
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC540-K01
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sec545-k02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SEC545-K02
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-arrive-or-travel-to-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before You Arrive or Travel to Class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-sans-mylabs-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. SANS MyLabs Access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-lab-range-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Lab Range Provisioning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-sans-cloud-security-flight-simulator-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. SANS Cloud Security Flight Simulator Access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-sec540-lab-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. SEC540 Lab Instructions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-sec540-environment-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. SEC540 Environment Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. SEC540 Environment Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aws-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AWS Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hands-on-lab-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on Lab Instructions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec540-lab-setup-guide-l01">SEC540 Lab Setup Guide (L01)</h1>
+<h2 id="before-you-arrive-or-travel-to-class">Before You Arrive or Travel to Class</h2>
+<p>You must complete several steps before you arrive or travel to class.  For those students attending a live class event, this means completing the setup process before you arrive at the venue.</p>
+<p>The following sections of this document cover these steps:</p>
+<ol>
+<li><strong>Downloading Course Materials</strong>: Follow the guidance at <a href="https://sansurl.com/downloading-course-materials" rel="noopener" target="_blank">https://sansurl.com/downloading-course-materials</a> to access and download your course materials.</li>
+<li><strong>SANS MyLabs Access</strong>: Some materials for your course are dynamically generated. Follow the steps below to access this material in the MyLabs section of your sans.org account.</li>
+<li><strong>Lab Range Provisioning</strong>: Review the guidance below to launch the SEC540 lab environment range, and download your lab range configuration files.</li>
+<li><strong>SANS Cloud Security Flight Simulator Access</strong>: Follow the steps below to authenticate to the Cloud Security Flight Simulator and access the services running on the DevOps server.</li>
+<li><strong>SEC540 Lab Instructions</strong>: Follow the steps below to connect to the DevOps server, update the lab instructions, and apply the errata patches to ensure you are working from the most recent instructions available.</li>
+<li><strong>SEC540 Cloud Configuration</strong>: Follow the steps below to complete the relevant environment configuration for your selected cloud provider.</li>
+</ol>
+<h2 id="2-sans-mylabs-access">2. SANS MyLabs Access</h2>
+<p>To access the SANS Cloud Security Flight Simulator, sign in to <a href="https://sans.org/account" rel="noopener" target="_blank">https://sans.org/account</a> and view the <strong>My Labs</strong> screen. Expand the <strong>SEC540</strong> section and read through the details. For step-by-step instructions, review the guidance on the SANS website at <a href="https://sansurl.com/accessing-mylabs-content" rel="noopener" target="_blank">https://sansurl.com/accessing-mylabs-content</a>.</p>
+<h2 id="3-lab-range-provisioning">3. Lab Range Provisioning</h2>
+<div class="admonition info">
+<p class="admonition-title">OnDemand Student Access</p>
+<p>Students taking SEC540 OnDemand will see a dynamic provisioning option on their <a href="https://connect.labs.sans.org/" rel="noopener" target="_blank">SANS My Labs</a> page. Students will need to press the <strong>Launch</strong> button to provision their lab range. After launching the simulator, the range configuration files will be available to download within 30 minutes.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Live Students Access</p>
+<p>Students taking SEC540 at a live event (in person or online) will automatically have their lab range provisioned 24 hours before the event starts. Before the class starts, browse to the <a href="https://connect.labs.sans.org/" rel="noopener" target="_blank">SANS My Labs</a> page to download the range configuration files.</p>
+</div>
+<p>From the <strong>My Labs</strong> screen, scroll to the <strong>Downloadable Files</strong> table and locate the configuration files for your lab range.</p>
+<p><img alt="" class="w800" src="../img/range-configuration-files.png" /></p>
+<p>Download each of the following files and move them into a noted directory location on your host machine:</p>
+<ul>
+<li>
+<p><em>sans-sec540-range-access.txt</em> - (Required) The primary configuration file for your lab range that includes your unique range URL, expiration time, username, and password for authenticating to the SANS Cloud Security Flight Simulator. After authentication, you can browse and authenticate (if needed) to the other services hosted on the range's DevOps server including the lab instructions, OpenVSCode server, GitLab, Vault, Keycloak, Moonlight Monitoring, and Defect Dojo.</p>
+</li>
+<li>
+<p><em>aws-login-info.txt</em> - (Required) Contains instructions for signing in to a time-limited SANS managed AWS account using the AWS Web Console.You will use this file during the lab setup if you choose to use the AWS cloud provider for the course.</p>
+</li>
+<li>
+<p><em>aws-iam-user-credentials.json</em> - (Optional) Contains programmatic access credentials for configuring the DevOps server to authenticate to the SANS managed AWS account. These credentials have already been placed on the DevOps server in the <em>~/config/aws-config.json</em> file. You should not need to use this file, but keep it as a backup just in case you need to reconfigure the credentials at any point.</p>
+</li>
+<li>
+<p><em>azure-login-info.txt</em> - (Required) Contains instructions for signing in to a time-limited SANS managed Azure subscription using the Azure Web portal. You will use this file during the lab setup if you choose to use the Azure cloud provider for the course.</p>
+</li>
+<li>
+<p><em>azure-service-principal-config.json</em> - (Optional) Contains programmatic service principal credentials for configuring the DevOps server to authenticate to the SANS managed Azure subscription. These credentials have already been placed on the DevOps server in the <em>~/config/azure-config.json</em> file. You should not need to use this file, but keep it as a backup just in case you need to reconfigure the credentials at any point.</p>
+</li>
+</ul>
+<h2 id="4-sans-cloud-security-flight-simulator-access">4. SANS Cloud Security Flight Simulator Access</h2>
+<p>Open the <em>sans-sec540-range-access.txt</em> configuration file you downloaded in the previous section. Find the SEC540 Range Access Instructions at the top of the file, which includes the Range URL, Username, Password, and Expiration.</p>
+<div class="admonition abstract">
+<p class="admonition-title">Example SEC540 Range Access Instructions</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SEC540 Range Access Instructions
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Your SEC540 Lab Range is hosted on the unique-identifier.domain.tld domain.
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>To access the range services, you need to authenticate to the range with the
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>following credentials:
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Range URL: https://range.unique-identifier.domain.tld
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Range Username: range-unique-identifier
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Range Password: unique-range-password
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>Range Expiration: end date and time
+</span></code></pre></div>
+</div>
+<p>When accessing the Cloud Security Flight Simulator, we recommend opening a browser on your host machine (Chrome or Firefox) and using a private (or incognito) browsing session to ensure the range services do not interfere with your existing profiles and sessions. In the private browsing session, navigate to the Range URL provided in the configuration file (<code>https://range.unique-identifier.domain.tld</code>). You should see the SANS Cloud Security Flight Simulator login page.</p>
+<p><img alt="" class="w500" src="../img/range-sign-in.png" /></p>
+<p>Enter the Range Username and Range Password to authenticate to the SANS Cloud Security Flight Simulator. After successfully authenticating, you will be redirected to the lab instructions, which are hosted on the DevOps server. Observe that the top navigation bar includes links to the other services hosted on the DevOps server including the GitLab, VSCode, Vault, and many other services.</p>
+<p><img alt="" class="w800" src="../img/lab-instructions.png" /></p>
+<h2 id="5-sec540-lab-instructions">5. SEC540 Lab Instructions</h2>
+<p>Before getting started, you need to update the lab instructions and apply any available patches to the DevOps server. To do this, browse to the OpenVSCode Server running on the DevOps server and open a new Terminal session.</p>
+<ol>
+<li>
+<p>Use the top navigation menu's <strong>VS Code</strong> link in the lab instructions to open a new browser tab and navigate to the OpenVSCode Server running on the DevOps server. The URL can also be found in the <em>sans-sec540-range-access.txt</em> configuration file you downloaded earlier.</p>
+</li>
+<li>
+<p>If you receive a prompt asking if you trust the authors of the files in this workspace, select <strong>Yes, I trust the authors</strong>.</p>
+<p><img alt="" class="w500" src="../img/trust-authors.png" /></p>
+</li>
+<li>
+<p>If you receive a prompt asking if you reload the OpenVSCode server, select <strong>Reload</strong>.</p>
+<p><img alt="" class="w500" src="../img/reload-code-server.png" /></p>
+</li>
+<li>
+<p>If you are prompted to select a color theme, select one of the color themes (1) and then press the <strong>Mark Done</strong> button.</p>
+<p><img alt="" class="w500" src="../img/vscode-theme.png" /></p>
+</li>
+<li>
+<p>Use the hamburger button (≡) in the top left corner to find the <strong>New Terminal</strong> menu item. When prompted, select the <strong>code</strong> directory to open a new terminal session in the <em>/home/student/code</em> directory.</p>
+<p><img alt="" class="w800" src="../img/code001.png" /></p>
+</li>
+<li>
+<p>Observe the OpenVSCode server displays an embedded Terminal in the bottom of the window.</p>
+<p><img alt="" src="../img/code002.png" /></p>
+</li>
+<li>
+<p>When copying and pasting commands into the OpenVSCode terminal, the browsers may need permission to access your host machine's clipboard.</p>
+<ul>
+<li>
+<p>In <strong>Firefox</strong>, the <code>dom.events.testing.asyncClipboard</code> option needs to be enabled to paste commands into the embedded OpenVSCode terminal. To set this option, browse to the <code>about:config</code> URL. Then, search for the <code>dom.events.testing.asyncClipboard</code> option and double click set it to <code>true</code>.</p>
+<p><img alt="" class="w800" src="../img/ff008.png" /></p>
+</li>
+<li>
+<p>In <strong>Chrome</strong>, when prompted with a popup at the top of the browser window, press the <strong>Allow</strong> button.</p>
+<p><img alt="" class="w300" src="../img/chrome-clipboard.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Run the following command in the Terminal to update the lab instructions to the most recent version.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>workbook-update
+</span></code></pre></div>
+<div class="admonition abstract">
+<p class="admonition-title">Example Output</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Starting workbook update...
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>31c1512 (grafted, HEAD -&gt; main, origin/main, origin/HEAD) Built from @ b0420e67684777babaff981eb538943314a26dd5
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Workbook update complete!
+</span></code></pre></div>
+</div>
+</li>
+<li>
+<p>Run the following command to apply the available updates to the DevOps server. These are published as needed when cloud service or DevOps tool changes break the lab environment.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>virtual-machine-update
+</span></code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">Important</p>
+<p>You must apply <em>all</em> virtual machine updates for the labs to work properly.</p>
+</div>
+</li>
+<li>
+<p>When the virtual machine updates have finished applying, you can leave the browser tab running your OpenVSCode session open. You will use this again in Lab 1.0 to configure the cloud credentials.</p>
+</li>
+</ol>
+<h2 id="6-sec540-environment-configuration">6. SEC540 Environment Configuration</h2>
+<p>SEC540's lab environment focuses on cloud native technologies including GitLab CI/CD, Vault, Terraform, Kubernetes, Sigstore, Trivy, Open Policy Agent, Gatekeeper, Keycloak, Kong API Gateway, Checkov, Semgrep, Trivy, Prowler, Defect Dojo, Grafana, Open Telemetry, and Cloud Custodian. These technologies are cloud agnostic and used in the lab environment regardless of which cloud provider you choose. However, the configuration and implementation details of each technology will vary slightly depending on whether you target the Amazon Web Services (AWS) or Microsoft Azure cloud providers.</p>
+<p>Students are expected to choose <strong>ONE</strong> cloud provider and work through the applicable labs during the course. Lab time estimates are based on selecting a <strong>single</strong> cloud provider. After deciding which cloud to use, you will configure the DevOps server to use a SANS managed time-limited AWS or Azure account to host the lab infrastructure.</p>
+<p>The following sections should help guide your decision on which cloud provider to choose:</p>
+<h3 id="aws-cloud">AWS Cloud</h3>
+<p>Deploys workloads using Terraform for Infrastructure as Code, Amazon Elastic Kubernetes Service (EKS) for container orchestration, and other services such as IAM, EC2, S3, and Lambda.</p>
+<h3 id="azure-cloud">Azure Cloud</h3>
+<p>Deploys workloads using Terraform for Infrastructure as Code, Azure Kubernetes Service (AKS) for container orchestration, and other services such as Entra ID, Azure Virtual Machines, and Azure Storage.</p>
+<h3 id="hands-on-lab-instructions">Hands-on Lab Instructions</h3>
+<p>In your browser, go back to the lab instructions tab and use the <strong>Hands-on Labs</strong> top navigation menu item to view the <strong>Lab List</strong> page.</p>
+<p><img alt="" src="../img/lab-list.png" /></p>
+<p>Depending on the cloud provider you selected, select the appropriate <strong>Getting Started</strong> lab and complete the instructions to finish the lab environment setup.</p>
+<ul>
+<li>
+<p><strong>AWS</strong>: Complete the <strong>Lab 1.0 - AWS</strong> steps in the lab instructions to finish configuring the DevOps server to use the SANS managed AWS cloud account.</p>
+</li>
+<li>
+<p><strong>Azure</strong>: Complete the <strong>Lab 1.0 - Azure</strong> steps in the lab instructions to finish configuring the DevOps server to use the SANS managed Azure cloud account.</p>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©2025 Eric Johnson, Ben Allen, and Frank Kim.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "content.code.annotate", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
