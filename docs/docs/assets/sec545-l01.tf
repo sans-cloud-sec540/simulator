@@ -283,47 +283,15 @@ resource "aws_security_group" "k3s" {
   }
 
   ingress {
-    description = "NodePort 30080"
-    from_port   = 30080
-    to_port     = 30080
+    description = "NodePort range 30000-30085"
+    from_port   = 30000
+    to_port     = 30085
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    description = "NodePort 30086"
-    from_port   = 30086
-    to_port     = 30086
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "NodePort 30088"
-    from_port   = 30088
-    to_port     = 30088
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "NodePort 30090"
-    from_port   = 30090
-    to_port     = 30090
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "NodePort 30143"
-    from_port   = 30143
-    to_port     = 30143
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "NodePort 30800"
+    description = "NodePort backend"
     from_port   = 30800
     to_port     = 30800
     protocol    = "tcp"
