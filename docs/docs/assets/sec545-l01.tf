@@ -230,7 +230,7 @@ resource "aws_security_group" "sec545vm" {
     to_port     = 54000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-#    cidr_blocks = [local.allowed_cidr]
+    #    cidr_blocks = [local.allowed_cidr]
   }
 
   egress {
@@ -469,7 +469,7 @@ resource "aws_instance" "web" {
   subnet_id              = aws_subnet.subnet1.id
   vpc_security_group_ids = [aws_security_group.sec545vm.id]
   root_block_device {
-    volume_size = 100
+    volume_size = 150
   }
 
   associate_public_ip_address = true
