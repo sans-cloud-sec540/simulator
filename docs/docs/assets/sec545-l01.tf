@@ -230,7 +230,7 @@ resource "aws_security_group" "sec545vm" {
     to_port     = 54000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-#    cidr_blocks = [local.allowed_cidr]
+    #    cidr_blocks = [local.allowed_cidr]
   }
 
   egress {

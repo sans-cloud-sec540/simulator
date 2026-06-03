@@ -21,7 +21,8 @@ jobs:
           key: ${{ github.ref }}
           path: .cache
       - run: |
-          pip install mkdocs mkdocs-material
+          # mkdocs >=1.4 required for `hooks:` config support (see https://www.mkdocs.org/about/release-notes/#version-14-2022-09-27)
+          pip install 'mkdocs>=1.4' mkdocs-material
           mkdocs --version
           cd ./docs
           mkdocs gh-deploy --force
