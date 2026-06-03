@@ -469,7 +469,7 @@ resource "aws_instance" "web" {
   subnet_id              = aws_subnet.subnet1.id
   vpc_security_group_ids = [aws_security_group.sec545vm.id]
   root_block_device {
-    volume_size = 150
+    volume_size = 100
   }
 
   associate_public_ip_address = true

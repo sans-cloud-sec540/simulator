@@ -3,6 +3,9 @@ copyright: "©2025 Eric Johnson, Ben Allen, and Frank Kim."
 site_description: "SANS Cloud Security Flight Simulator setup instructions and bootstrap template."
 site_author: "Eric Johnson, Ben Allen, and Frank Kim"
 
+hooks:
+  - hooks.py
+
 theme:
   name: "material"
   palette:
