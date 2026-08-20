@@ -25,10 +25,7 @@ nav:
   - Home: "index.md"
   # - Versions:
   - SEC540-K01: "k01.md"
-  - SEC540-L01: "l01.md"
   - SEC545-K02: "sec545-k02.md"
-  - SEC545-L01: "sec545-l01.md"
-  - SEC545-L02: "sec545-l02.md"
 
 markdown_extensions:
   - admonition
