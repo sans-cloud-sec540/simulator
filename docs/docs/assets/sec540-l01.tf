@@ -1,12 +1,7 @@
 # SANS Cloud Security Flight Simulator launch template
 variable "vm_version" {
-  type        = string
-  description = "SemVer version of image or empty for latest"
-  default     = ""
-  validation {
-    condition     = length(var.vm_version) == 0 || can(regex("[0-9]+.[0-9]+.[0-9]+", var.vm_version))
-    error_message = "Sem Ver for image eg. 23.0.100 ( [0-9]+.[0-9]+.[0-9]+ ) or unset"
-  }
+  type    = string
+  default = "latest"
 }
 
 variable "instance_type" {
@@ -40,11 +35,11 @@ variable "course_number" {
 
 variable "course_version" {
   type        = string
-  description = "SANS Course Version ... eg l01"
-  default     = "l01"
+  description = "SANS Course Version ... eg l01-01"
+  default     = "l01-01"
   validation {
-    condition     = can(regex("^[a-z][0-9][0-9]$", var.course_version))
-    error_message = "Lower-case SANS Course Release ... eg l01"
+    condition     = can(regex("^[a-z][0-9][0-9]-[0-9][0-9]$", var.course_version))
+    error_message = "Lower-case SANS Course Release ... eg l01-01"
   }
 }
 
@@ -103,7 +98,7 @@ data "aws_ami" "ami" {
 
   filter {
     name   = "name"
-    values = ["sans-${lower(var.course_number)}-${var.course_version}.${var.vm_version}*"]
+    values = ["author-${lower(var.course_number)}-${var.course_version}-flight-simulator-*"]
   }
 
   filter {
@@ -119,6 +114,41 @@ data "publicip_address" "default" {
 
 locals {
   allowed_cidr = (var.trusted_cidr != "600.500.400.300/200" ? var.trusted_cidr : "${data.publicip_address.default.ip}/32")
+
+  socks_proxy_script = <<EOF
+#!/bin/bash
+## This line is needed until tf-cloudinit module is updated - https://github.com/sans-sroc/tf-cloudinit/issues/56
+(chpasswd <<< "student:StartTheLabs" 2>&1 >/dev/null && echo "Password Configuration Success") || echo "Password Configuration Error"
+rm -f /home/student/.ssh/known_hosts || true
+sed --in-place -e 's#REPLACE_SOCKS_PASSWORD#${random_pet.proxy_pass.id}#g' /etc/systemd/system/microsocks.service || true
+systemctl daemon-reload
+systemctl restart microsocks
+echo "${random_pet.proxy_pass.id}" > /home/socks.txt
+echo "SOCKS Proxy Configuration Complete"
+EOF
+
+  range_config = jsonencode({
+    sans_range_id                    = "null"
+    sans_range_domain_name           = "null",
+    sans_lite_llm_api_key            = "null",
+    sans_range_smart_proxy_password  = random_pet.proxy_pass.id,
+    sans_range_traefik_auth_password = "null",
+  })
+
+  aws_config = (jsonencode({
+    access_key_id     = "REPLACE_ME",
+    secret_access_key = "REPLACE_ME",
+    region            = "REPLACE_ME"
+  }))
+
+  azure_config = (jsonencode({
+    tenant_id            = "REPLACE_ME",
+    client_id            = "REPLACE_ME",
+    client_secret        = "REPLACE_ME",
+    subscription_id      = "REPLACE_ME",
+    location             = "REPLACE_ME",
+    virtual_machine_size = "AUTO_CONFIGURED"
+  }))
 }
 
 resource "random_pet" "proxy_pass" {
@@ -264,22 +294,31 @@ users:
     ssh-authorized-keys:
     - ${tls_private_key.example.public_key_openssh}
 write_files:
-  - content: |
-      #!/bin/bash
-      (chpasswd <<< "student:StartTheLabs" 2>&1 >/dev/null && echo "Password Configuration Success") || echo "Password Configuration Error"
-      rm -f /home/student/.ssh/known_hosts || true
-      sed --in-place -e 's#REPLACE_SOCKS_PASSWORD#${random_pet.proxy_pass.id}#g' /etc/systemd/system/microsocks.service || true
-      systemctl daemon-reload
-      systemctl restart microsocks
-      echo "${socks_password}" > /home/socks.txt
-      echo "SOCKS Proxy Configuration Complete"
+  - encoding: b64
+    content: ${base64encode(local.socks_proxy_script)}
     path: /root/set_proxy_password
-    permissions: '0700'
+    permissions: "0700"
+  - encoding: b64
+    content: ${base64encode(local.range_config)}
+    path: /home/student/config/range-config.json
+    permissions: "0600"
+    owner: "student:student"
+  - encoding: b64
+    content: ${base64encode(local.aws_config)}
+    path: /home/student/config/aws-config.json
+    permissions: "0600"
+    owner: "student:student"
+  - encoding: b64
+    content: ${base64encode(local.azure_config)}
+    path: /home/student/config/azure-config.json
+    permissions: "0600"
+    owner: "student:student"
 runcmd:
   - /root/set_proxy_password
   - chmod 0700 /home/student/.ssh
   - chmod 0600 /home/student/.ssh/authorized_keys
   - chmod 0666 /etc/docker/compose/auth/config.yaml
+  - "echo 'RangeId: null' > /etc/SANS_RANGE_ID"
 EOF
 
   tags = {
